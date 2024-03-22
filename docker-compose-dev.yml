@@ -1,0 +1,33 @@
+version: 'v1.0.0'
+
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile.dev
+    command: npm run dev
+    ports:
+      - 3000:3000
+    develop:
+      watch:
+        - action: sync
+          path: ./backend
+          target: /home/app/backend
+        - action: rebuild
+          path: ./backend/package.json
+
+  frontend: 
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.dev
+    command: npm run dev -- --host
+    ports:
+      - 5173:5173
+    develop:
+      watch:
+        - action: sync
+          path: ./frontend
+          target: /home/app/frontend
+        - action: rebuild
+          path: ./frontend/package.json
+    
